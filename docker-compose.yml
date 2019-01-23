@@ -1,0 +1,19 @@
+version: "3"
+services:
+  generic:
+    container_name: cache-steam
+    image: "steamcache/generic:latest"
+    ports:
+      - "192.168.1.254:80:80"
+    restart: unless-stopped
+    volumes:
+      - "./cache/steam/data:/data/cache"
+      - "./cache/steam/logs:/data/logs"
+  steamcache-dns:
+    container_name: steamcache-dns
+    environment:
+      - USE_GENERIC_CACHE=true
+      - LANCACHE_IP=192.168.1.254
+    image: "steamcache/steamcache-dns:latest"
+    ports:
+      - "192.168.1.254:53:53/udp"
